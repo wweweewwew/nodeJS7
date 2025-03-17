@@ -1,13 +1,12 @@
-process.on("SIGINT", () => {
-  console.log("\nGracefully shutting down");
-  process.exit(0);
-});
+import getConnection from "./database/connection";
+// import { logAllQuestions } from "./database/queries";
+import { updateAnswer } from "./database/queries";
 
 export function main() {
   try {
-    console.log("🎉 Party time! Your app is ready to rock!\n");
-    console.log("👉 Edit \x1b[38;5;208msrc/index.ts\x1b[0m and watch the magic happen here!");
-    console.log("   Lets build something amazing!\n");
+    const connection = getConnection()
+    // logAllQuestions(connection)
+    updateAnswer({ connection, userId: 1, questionId: 1, surveyId: 2014, updatedAnswer: "50" })
   } catch (error) {
     console.error("Failed to start:", error);
     process.exit(1);
