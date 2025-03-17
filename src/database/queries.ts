@@ -1,5 +1,5 @@
 import type { Database } from "sqlite3"
-import type { UpdateAnswer } from "./types"
+import type { UpdateAnswer, MostFrequentQuestions } from "./types"
 
 function logAllQuestions(connection: Database) {
   connection.each('select * from Question', (error, row) => {
@@ -31,8 +31,21 @@ function updateAnswer({ connection, userId, questionId, surveyId, updatedAnswer 
   })
 }
 
-function getMostFrequentQuestions({ connection, quantity } : MostFrequentQuestions) {
-  
+function getMostFrequentQuestions({ connection, quantity, cb }: MostFrequentQuestions) {
+  const statement = `select QuestionID, count(*) as answers
+    from Answer
+    group by QuestionID
+    order by answers desc
+    limit $quantity`
+
+  connection.all(statement, { $quantity: quantity ?? 5 }, (error, rows) => {
+    if (error) {
+      console.error(error)
+      return
+    }
+
+    cb(rows)
+  })
 }
 
-export { logAllQuestions, updateAnswer }
+export { logAllQuestions, updateAnswer, getMostFrequentQuestions }

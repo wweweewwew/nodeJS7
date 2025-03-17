@@ -8,4 +8,9 @@ interface UpdateAnswer {
   updatedAnswer: string;
 }
 
-export type { UpdateAnswer }
+interface MostFrequentQuestions {
+  connection: Database;
+  quantity?: number;
+}
+
+export type { UpdateAnswer, MostFrequentQuestions }
