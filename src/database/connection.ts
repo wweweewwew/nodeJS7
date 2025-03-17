@@ -1,5 +1,7 @@
 import { join } from 'node:path'
-import sqlite3 from 'sqlite3'
+import sqlite3 from 'better-sqlite3'
+import { Kysely, SqliteDialect } from 'kysely'
+import type { DatabaseSchema } from './types'
 
 export default function getConnection() {
   const dbFile = process.env.DB_FILE
@@ -8,10 +10,10 @@ export default function getConnection() {
   }
   const dbPath = join(import.meta.dirname, '..', '..', dbFile)
   try {
-    if (process.env.NODE_ENV === 'development') {
-      sqlite3.verbose()
-    }
-    return new sqlite3.Database(dbPath)
+    const dialect = new SqliteDialect({
+      database: new sqlite3(dbPath)
+    })
+    return new Kysely<DatabaseSchema>({ dialect })
   } catch (error) {
     console.error(error)
     throw new Error('Couldn\'t establish connection with a database')

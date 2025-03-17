@@ -7,11 +7,10 @@ export function main() {
 
     getMostFrequentQuestions({
       connection,
-      quantity: 10,
-      cb: (rows: unknown[]) => { console.log (rows) }
+      cb: (rows: unknown[]) => { console.log(rows) }
     })
 
-    } catch (error) {
+  } catch (error) {
     console.error("Failed to start:", error);
     process.exit(1);
   }

@@ -32,9 +32,11 @@ function updateAnswer({ connection, userId, questionId, surveyId, updatedAnswer 
 }
 
 function getMostFrequentQuestions({ connection, quantity, cb }: MostFrequentQuestions) {
-  const statement = `select QuestionID, count(*) as answers
+  const statement = `select questiontext as question, count(*) as answers
     from Answer
-    group by QuestionID
+    left join Question
+    on Question.questionid = Answer.QuestionID
+    group by Answer.QuestionID
     order by answers desc
     limit $quantity`
 
