@@ -1,0 +1,33 @@
+{
+	"name": "node-databases",
+	"version": "0.1.0",
+	"license": "MIT",
+	"private": true,
+	"type": "module",
+	"main": "build/index.js",
+	"scripts": {
+		"dev": "tsx watch src/index.ts --env-file=.env.local",
+		"dev:test": "vitest --silent",
+		"check": "biome check .",
+		"fix": "biome check --fix .",
+		"format": "biome format --write .",
+		"test": "vitest run --silent",
+		"test:coverage": "vitest run --coverage --silent",
+		"build": "rimraf build && tsc",
+		"start": "node build/index.js --env-file=.env.prod"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@tsconfig/node20": "^20.1.4",
+		"@types/node": "^22.10.5",
+		"@vitest/coverage-v8": "^3.0.7",
+		"rimraf": "^6.0.1",
+		"tsx": "^4.19.2",
+		"typescript": "^5.7.2",
+		"vite-tsconfig-paths": "^5.1.4",
+		"vitest": "^3.0.7"
+	},
+	"engines": {
+		"node": ">=22.0.0"
+	}
+}
