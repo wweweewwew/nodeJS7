@@ -1,35 +1,41 @@
-import type { Database } from "sqlite3"
 import type { UpdateAnswer, MostFrequentQuestions } from "./types"
+import getConnection from "./connection"
 
-function logAllQuestions(connection: Database) {
-  connection.each('select * from Question', (error, row) => {
-    if (error) {
-      console.error(error)
-    } else {
-      console.log(row)
-    }
-  })
+async function logAllQuestions(connection: ReturnType<typeof getConnection>) {
+  try {
+    const result = await connection.selectFrom("Question").selectAll().execute()
+    console.log(result)
+  } catch (error) {
+    console.error(error)
+  }
+  // connection.each('select * from Question', (error, row) => {
+  //   if (error) {
+  //     console.error(error)
+  //   } else {
+  //     console.log(row)
+  //   }
+  // })
 }
 
-function updateAnswer({ connection, userId, questionId, surveyId, updatedAnswer }: UpdateAnswer) {
-  const statement = `
-    update Answer
-    set AnswerText = $updatedAnswer
-    where SurveyID = $surveyId
-          and UserID = $userId
-          and QuestionID = $questionId`
+// function updateAnswer({ connection, userId, questionId, surveyId, updatedAnswer }: UpdateAnswer) {
+//   const statement = `
+//     update Answer
+//     set AnswerText = $updatedAnswer
+//     where SurveyID = $surveyId
+//           and UserID = $userId
+//           and QuestionID = $questionId`
 
-  connection.run(statement, {
-    $updatedAnswer: updatedAnswer,
-    $surveyId: surveyId,
-    $questionId: questionId,
-    $userId: userId
-  }, (error) => {
-    if (error) {
-      console.error(error)
-    }
-  })
-}
+//   connection.run(statement, {
+//     $updatedAnswer: updatedAnswer,
+//     $surveyId: surveyId,
+//     $questionId: questionId,
+//     $userId: userId
+//   }, (error) => {
+//     if (error) {
+//       console.error(error)
+//     }
+//   })
+// }
 
 function getMostFrequentQuestions({ connection, quantity, cb }: MostFrequentQuestions) {
   const statement = `select questiontext as question, count(*) as answers
@@ -50,4 +56,4 @@ function getMostFrequentQuestions({ connection, quantity, cb }: MostFrequentQues
   })
 }
 
-export { logAllQuestions, updateAnswer, getMostFrequentQuestions }
+export { logAllQuestions, getMostFrequentQuestions }
