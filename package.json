@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "tsx watch --env-file=.env.local src/index.ts",
     "dev:test": "vitest --silent",
-    "db:generate": "kysely-codegen --env-file .env.local --url env(DB_FILE) --out-file src/database/types.d.ts",
+    "db:pull": "prisma db pull",
+    "db:generate": "prisma generate",
     "check": "biome check .",
     "fix": "biome check --fix .",
     "format": "biome format --write .",
@@ -34,8 +35,10 @@
     "node": ">=22.0.0"
   },
   "dependencies": {
+    "@prisma/client": "^6.5.0",
     "better-sqlite3": "^11.9.0",
     "kysely": "^0.27.6",
+    "prisma": "^6.5.0",
     "sqlite3": "^5.1.7"
   }
 }
