@@ -1,15 +1,11 @@
 import getConnection from "./database/connection";
-import { logAllQuestions } from "./database/queries";
+import { logAllQuestions, createSurvey } from "./database/queries";
 
-export function main() {
+export async function main() {
   try {
     const connection = getConnection()
-    logAllQuestions(connection)
-
-    // getMostFrequentQuestions({
-    //   connection,
-    //   cb: (rows: unknown[]) => { console.log(rows) }
-    // })
+    await logAllQuestions(connection)
+    await createSurvey(connection, { Description: "Insertable Test" })
   } catch (error) {
     console.error("Failed to start:", error);
     process.exit(1);
